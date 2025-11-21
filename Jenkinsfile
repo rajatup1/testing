@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment{
-        DOCKERHUB_CREDS_ID = dockerhub-cred
+        DOCKERHUB_CREDS_ID = 'dockerhub-cred'
     }
 
     stages{
