@@ -22,7 +22,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 sh '''
-                    docker build -t rajat9893308210/simple-node-app:latest .
+                    docker build --platform linux/amd64 -t rajat9893308210/simple-node-app:latest .
                 '''
             }
         }
