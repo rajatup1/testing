@@ -3,6 +3,9 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDS_ID = 'dockerhub-cred'
+        EC2_USER = 'ec2-user'
+        EC2_HOST = '15.206.73.38'
+        SSH_KEY =  credentials('ec2-ssh-key')
     }
 
     stages {
@@ -48,10 +51,15 @@ pipeline {
             }
         }
 
-        stage('Run docker app') {
+        stage('Deploy to EC2') {
             steps {
                 sh '''
-                    docker run --rm -p 3000:3000 rajat9893308210/simple-node-app:latest
+                    ssh -i $SSH_KEY $EC2_USER@$EC2_HOST '
+                    docker pull rajat9893308210/simple-node-app:latest &&
+                    docker stop simple-node-app || true &&
+                    docker rm simple-node-app || true &&
+                    docker run -d -p 3000:3000 --name simple-node-app rajat9893308210/simple-node-app:latest
+                  '
                 '''
             }
         }
