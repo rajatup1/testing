@@ -51,6 +51,19 @@ pipeline {
             }
         }
 
+        stage('Test SSH and Docker') {
+            steps {
+                sh """
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY $EC2_USER@$EC2_HOST '
+                        echo "Connected to EC2!"
+                        docker --version
+                        docker ps
+                    '
+                """
+    }
+}
+
+
         stage('Deploy to EC2') {
             steps {
                 sh '''
