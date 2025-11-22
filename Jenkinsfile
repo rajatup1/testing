@@ -54,7 +54,7 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 sh '''
-                    ssh -i $SSH_KEY $EC2_USER@$EC2_HOST '
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY $EC2_USER@$EC2_HOST '
                     docker pull rajat9893308210/simple-node-app:latest &&
                     docker stop simple-node-app || true &&
                     docker rm simple-node-app || true &&
